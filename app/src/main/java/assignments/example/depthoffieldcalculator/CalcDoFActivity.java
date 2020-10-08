@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 import assignments.example.depthoffieldcalculator.model.DoFCalculator;
 import assignments.example.depthoffieldcalculator.model.Lens;
 
@@ -33,10 +35,11 @@ public class CalcDoFActivity extends AppCompatActivity {
         displayLensDetail();
 
         user_aperture = (EditText) findViewById(R.id.user_aperture);
-//        user_dist = (EditText) findViewById(R.id.user_dist);
-//        user_coc = (EditText) findViewById(R.id.user_coc);
+        user_dist = (EditText) findViewById(R.id.user_dist);
+        user_coc = (EditText) findViewById(R.id.user_coc);
 
         Button btnCalc = (Button) findViewById(R.id.btnCalculate);
+
         btnCalc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,16 +60,16 @@ public class CalcDoFActivity extends AppCompatActivity {
                 double depthOfField = DoF.getDepthOfFieldInM();
                 double hyperfocalDistance = DoF.getHyperfocalDistanceInM();
 
-                TextView nearFocDist = (TextView) findViewById(R.id.calc_nfd);
-                TextView farFocDist = (TextView) findViewById(R.id.calc_ffd);
-                TextView depOfField = (TextView) findViewById(R.id.calc_dof);
-                TextView hypFocDist = (TextView) findViewById(R.id.calc_hfd);
+                final TextView nearFocDist = (TextView) findViewById(R.id.calc_nfd);
+                final TextView farFocDist = (TextView) findViewById(R.id.calc_ffd);
+                final TextView depOfField = (TextView) findViewById(R.id.calc_dof);
+                final TextView hypFocDist = (TextView) findViewById(R.id.calc_hfd);
 
                 if ((selectedAperture >= 1.4) && (CoC > 0) && (dist > 0)) {
-                    nearFocDist.setText(nearFocalPoint + "m");
-                    farFocDist.setText(farFocalPoint + "m");
-                    depOfField.setText(depthOfField + "m");
-                    hypFocDist.setText(hyperfocalDistance + "m");
+                    nearFocDist.setText("" + formatM(nearFocalPoint) + "m");
+                    farFocDist.setText("" + formatM(farFocalPoint) + "m");
+                    depOfField.setText("" + formatM(depthOfField) + "m");
+                    hypFocDist.setText("" + formatM(hyperfocalDistance) + "m");
                 }
                 else {
                     if (selectedAperture < 1.4) {
@@ -90,7 +93,11 @@ public class CalcDoFActivity extends AppCompatActivity {
         });
     }
 
-
+    // Format a distance in meters to two decimal places
+    private String formatM(double distanceInM) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(distanceInM);
+    }
 
     public static Intent makeIntent(Context context, String make, int focLength, double aperture, String detail) {
         Intent intent = new Intent(context, CalcDoFActivity.class);

@@ -38,7 +38,10 @@ import java.util.Scanner;
 //               https://www.youtube.com/watch?v=cBDvTQHvQHw&feature=youtu.be
 //               https://www.youtube.com/watch?v=B1oaE0Odqes&feature=youtu.be
 //               https://www.youtube.com/watch?v=9OYNH067Xa0&feature=youtu.be
-// from Dr Brian Fraser's youtube channel
+//         from Dr Brian Fraser's youtube channel
+
+// Code found at https://www.youtube.com/watch?v=AD5qt7xoUU8&feature=share
+//         from Coding in Flow
 
 public class MainActivity extends AppCompatActivity {
     private Lens lens;
