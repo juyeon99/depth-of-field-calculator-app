@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = (TextView) viewClicked;
                 String message = "You selected:  " + textView.getText().toString();
                 Toast.makeText(MainActivity. this,message, Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(MainActivity.this, CalcDoFActivity.class);
+                startActivity(intent);
             }
         });
     }
