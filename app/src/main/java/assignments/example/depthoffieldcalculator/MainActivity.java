@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
                 lenses.add(new Lens(make, aperture, focLength));
                 populateListView();
             }
+            if (resultCode == RESULT_CANCELED) {
+                populateListView();
+            }
         }
     }
 }

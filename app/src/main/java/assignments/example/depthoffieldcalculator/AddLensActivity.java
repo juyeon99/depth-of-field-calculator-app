@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,19 +47,27 @@ public class AddLensActivity extends AppCompatActivity {
                 String user_focLength = exFocLength.getText().toString();
                 String user_aperture = exAperture.getText().toString();
 
-                Intent saveIntent = new Intent();
-                saveIntent.putExtra("Lens", user_make);
-
                 try {
                     int focLength = Integer.parseInt(user_focLength);
                     double aperture = Double.parseDouble(user_aperture);
-
-                    saveIntent.putExtra("Focal Length", focLength);
-                    saveIntent.putExtra("Aperture", aperture);
-                    setResult(RESULT_OK, saveIntent);
+                    if (focLength >= 0 && aperture >= 0) {
+                        Intent saveIntent = new Intent();
+                        saveIntent.putExtra("Lens", user_make);
+                        saveIntent.putExtra("Focal Length", focLength);
+                        saveIntent.putExtra("Aperture", aperture);
+                        setResult(RESULT_OK, saveIntent);
+                    }
+                    else {
+                        Toast.makeText(AddLensActivity.this,
+                                "You should enter non-negative number for focal length and aperture.",
+                                Toast.LENGTH_SHORT).show();
+                        Intent saveIntent = new Intent();
+                        setResult(RESULT_CANCELED, saveIntent);
+                        finish();
+                    }
                 } catch (NumberFormatException e) {  // throws exception when user didn't put a number
                     Toast.makeText(AddLensActivity.this,
-                            "Please enter numbers",
+                            "Invalid text. You should enter number for focal length and aperture.",
                             Toast.LENGTH_SHORT).show();
                 }
                 finish();
