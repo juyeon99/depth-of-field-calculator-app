@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import assignments.example.depthoffieldcalculator.model.DoFCalculator;
 import assignments.example.depthoffieldcalculator.model.Lens;
@@ -18,8 +19,6 @@ public class CalcDoFActivity extends AppCompatActivity {
     private int focLength;
     private double aperture;
     private String detail;
-
-    private DoFCalculator DoF;
 
     EditText user_aperture;
     EditText user_dist;
@@ -43,11 +42,49 @@ public class CalcDoFActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String user_aper = user_aperture.getText().toString();
                 double selectedAperture = Double.parseDouble(user_aper);
-                if (selectedAperture >= 1.4) {
-//                    DoF.getDepthOfFieldInM();
-//                    DoF.getNearFocalPointInM();
-                    TextView nearFocDist = (TextView) findViewById(R.id.calc_nfd);
-                    //nearFocDist.setText();
+
+                String user_circleOfConfusion = user_coc.getText().toString();
+                double CoC = Double.parseDouble(user_circleOfConfusion);
+
+                String user_distance = user_dist.getText().toString();
+                double dist = Double.parseDouble(user_distance);
+                Lens lens = new Lens(make, aperture, focLength);
+
+                DoFCalculator DoF = new DoFCalculator(CoC, lens, selectedAperture, dist);
+
+                double nearFocalPoint = DoF.getNearFocalPointInM();
+                double farFocalPoint = DoF.getFarFocalPointInM();
+                double depthOfField = DoF.getDepthOfFieldInM();
+                double hyperfocalDistance = DoF.getHyperfocalDistanceInM();
+
+                TextView nearFocDist = (TextView) findViewById(R.id.calc_nfd);
+                TextView farFocDist = (TextView) findViewById(R.id.calc_ffd);
+                TextView depOfField = (TextView) findViewById(R.id.calc_dof);
+                TextView hypFocDist = (TextView) findViewById(R.id.calc_hfd);
+
+                if ((selectedAperture >= 1.4) && (CoC > 0) && (dist > 0)) {
+                    nearFocDist.setText(nearFocalPoint + "m");
+                    farFocDist.setText(farFocalPoint + "m");
+                    depOfField.setText(depthOfField + "m");
+                    hypFocDist.setText(hyperfocalDistance + "m");
+                }
+                else {
+                    if (selectedAperture < 1.4) {
+                        nearFocDist.setText("Invalid aperture");
+                        farFocDist.setText("Invalid aperture");
+                        depOfField.setText("Invalid aperture");
+                        hypFocDist.setText("Invalid aperture");
+                    }
+                    if (CoC <= 0) {
+                        Toast.makeText(CalcDoFActivity.this,
+                                "You should enter positive number for the Circle of Confusion.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    if (dist <= 0) {
+                        Toast.makeText(CalcDoFActivity.this,
+                                "You should enter positive number for the Distance.",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
