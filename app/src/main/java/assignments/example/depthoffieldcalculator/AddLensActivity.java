@@ -51,18 +51,20 @@ public class AddLensActivity extends AppCompatActivity {
 
                     // Enforcing the constraints on user input
                     if ((focLength > 0) && (aperture >= 1.4) && (user_make.length() > 0)) {
-                        Intent saveIntent = new Intent();
-                        saveIntent.putExtra("Lens", user_make);
-                        saveIntent.putExtra("Focal Length", focLength);
-                        saveIntent.putExtra("Aperture", aperture);
-                        setResult(RESULT_OK, saveIntent);
+//                        Intent saveIntent = new Intent();
+//                        saveIntent.putExtra("Lens", user_make);
+//                        saveIntent.putExtra("Focal Length", focLength);
+//                        saveIntent.putExtra("Aperture", aperture);
+                        Intent saveIntent = MainActivity.makeIntent(AddLensActivity.this,user_make,focLength,aperture);
+                        //setResult(RESULT_OK, saveIntent);
+                        startActivity(saveIntent);
                     }
                     else {
                         Toast.makeText(AddLensActivity.this,
                                 "You should enter non-negative number for focal length and aperture.",
                                 Toast.LENGTH_SHORT).show();
-                        Intent saveIntent = new Intent();
-                        setResult(RESULT_CANCELED, saveIntent);
+                        //Intent saveIntent = new Intent();
+                        //setResult(RESULT_CANCELED, saveIntent);
                         finish();
                     }
                 } catch (NumberFormatException e) {  // throws exception when user didn't put a number

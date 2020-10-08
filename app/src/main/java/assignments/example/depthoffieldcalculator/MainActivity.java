@@ -1,5 +1,6 @@
 package assignments.example.depthoffieldcalculator;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -45,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
     private LensManager manager;
     private List<Lens> lenses = new ArrayList<>();
 
+    private static final String EXTRA_MAKE = "make";
+    private static final String EXTRA_FOC_LENGTH = "focal distance";
+    private static final String EXTRA_APERTURE = "aperture";
+
+    private String make;
+    private int focLength = 0;
+    private double aperture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,16 +65,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Adding lens
                 // Launch the AddLensActivity
-                //Intent intent = AddLensActivity.makeIntent(MainActivity.this);
-                Intent intent = new Intent(MainActivity.this, AddLensActivity.class);
+
+                Intent intent = AddLensActivity.makeIntent(MainActivity.this);
+                //Intent intent = new Intent(MainActivity.this, AddLensActivity.class);
                 startActivityForResult(intent,42);
             }
         });
         addLens();
         populateListView();
-
+        extractDataFromIntent();
         registerClickCallback();
     }
+
 
     // Adds the basic lenses to the list
     public void addLens() {
@@ -108,28 +119,56 @@ public class MainActivity extends AppCompatActivity {
                 String message = "You selected:  " + textView.getText().toString();
                 Toast.makeText(MainActivity. this,message, Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(MainActivity.this, CalcDoFActivity.class);
+                //Intent intent = new Intent(MainActivity.this, CalcDoFActivity.class);
+                Intent intent = CalcDoFActivity.makeIntent(MainActivity.this);
+                intent.putExtra("make", lenses.get(position).getMake());
+                intent.putExtra("focal distance", lenses.get(position).getFocalLengthInMM());
+                intent.putExtra("make", lenses.get(position).getMaxAperture());
+                //intent.putExtra("Detail",lenses.get(position).getDescription());
                 startActivity(intent);
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public static Intent makeIntent(Context context, String make, int focLength, double aperture) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(EXTRA_MAKE, make);
+        intent.putExtra(EXTRA_FOC_LENGTH, focLength);
+        intent.putExtra(EXTRA_APERTURE, aperture);
+        return intent;
+    }
 
-        if (requestCode == 42) {
-            if (resultCode == RESULT_OK) {
-                assert data != null;
-                String make = data.getStringExtra("Make");
-                int focLength = data.getIntExtra("Focal Length", 0);
-                double aperture = data.getDoubleExtra("Aperture", 0);
-                lenses.add(new Lens(make, aperture, focLength));
-                populateListView();
-            }
-            if (resultCode == RESULT_CANCELED) {
-                populateListView();
-            }
+    private void extractDataFromIntent() {
+        Intent intent = getIntent();
+        make = intent.getStringExtra(EXTRA_MAKE);
+        focLength = intent.getIntExtra(EXTRA_FOC_LENGTH, 0);
+        aperture = intent.getDoubleExtra(EXTRA_APERTURE, 0);
+        if (focLength != 0) {
+            lenses.add(new Lens(make, aperture, focLength));
+            populateListView();
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 42) {
+//            if (resultCode == RESULT_OK) {
+//                Intent intent = getIntent();
+//                make = intent.getStringExtra(EXTRA_MAKE);
+//                focLength = intent.getIntExtra(EXTRA_FOC_LENGTH, 0);
+//                aperture = intent.getDoubleExtra(EXTRA_APERTURE, 0);
+////                assert data != null;
+////                String make = data.getStringExtra("Make");
+////                int focLength = data.getIntExtra("Focal Length", 0);
+////                double aperture = data.getDoubleExtra("Aperture", 0);
+//                lenses.add(new Lens(make, aperture, focLength));
+//                populateListView();
+//            }
+//            if (resultCode == RESULT_CANCELED) {
+//                populateListView();
+//            }
+//        }
+//    }
 }
