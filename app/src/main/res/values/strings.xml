@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Depth of Field Calculator</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="select_a_lens_to_use">Select a lens to use:</string>
+    <string name="depth_of_field_calculator">Depth of Field Calculator</string>
+    <string name="lens_details">Lens Details</string>
+    <string name="ex_2_8_for_f2_8">ex: 2.8 for F2.8</string>
+    <string name="ex_200_for_200mm">ex: 200 for 200mm</string>
+    <string name="make">Make</string>
+    <string name="ex_canon">ex: Canon</string>
+    <string name="focal_length_mm">Focal Length [mm]</string>
+    <string name="aperture">Aperture</string>
+</resources>
