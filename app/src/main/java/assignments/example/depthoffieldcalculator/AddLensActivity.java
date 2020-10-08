@@ -29,8 +29,6 @@ public class AddLensActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_lens);
         setTitle("Lens Details");   // Changes the title
 
-        Intent intent = getIntent();
-
         exMake = (EditText) findViewById(R.id.exMake);
         exFocLength = (EditText) findViewById(R.id.exFocLength);
         exAperture = (EditText) findViewById(R.id.exAperture);
@@ -50,7 +48,9 @@ public class AddLensActivity extends AppCompatActivity {
                 try {
                     int focLength = Integer.parseInt(user_focLength);
                     double aperture = Double.parseDouble(user_aperture);
-                    if (focLength >= 0 && aperture >= 0) {
+
+                    // Enforcing the constraints on user input
+                    if ((focLength > 0) && (aperture >= 1.4) && (user_make.length() > 0)) {
                         Intent saveIntent = new Intent();
                         saveIntent.putExtra("Lens", user_make);
                         saveIntent.putExtra("Focal Length", focLength);
@@ -80,5 +80,9 @@ public class AddLensActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public static Intent makeIntent (Context context) {
+        return new Intent (context, AddLensActivity.class);
     }
 }

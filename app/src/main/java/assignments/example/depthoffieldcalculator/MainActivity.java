@@ -13,6 +13,7 @@ import android.view.View;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,19 +77,26 @@ public class MainActivity extends AppCompatActivity {
 
      // Populates the list of the lenses
     private void populateListView() {
-        ArrayList<String> arrayList = new ArrayList<>();
-
-        for (int i = 0; i < lenses.size(); i++ ) {
-            Lens l = lenses.get(i);
-            arrayList.add(l.getDescription());
+        // Empty State
+        if (lenses.size() == 0) {
+            TextView select = findViewById(R.id.select);
+            select.setText("No lenses to show. You can add lens pressing the red+ button on the bottom");
         }
+        else {
+            ArrayList<String> arrayList = new ArrayList<>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                R.layout.listview,
-                arrayList);
-        ListView list = (ListView) findViewById(R.id.listView);
-        list.setAdapter(adapter);
+            for (int i = 0; i < lenses.size(); i++) {
+                Lens l = lenses.get(i);
+                arrayList.add(l.getDescription());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    R.layout.listview,
+                    arrayList);
+            ListView list = (ListView) findViewById(R.id.listView);
+            list.setAdapter(adapter);
+        }
     }
 
     private void registerClickCallback() {
@@ -97,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 TextView textView = (TextView) viewClicked;
-                String message = "You Clicked:  " + textView.getText().toString();
+                String message = "You selected:  " + textView.getText().toString();
                 Toast.makeText(MainActivity. this,message, Toast.LENGTH_LONG).show();
             }
         });
