@@ -119,13 +119,12 @@ public class MainActivity extends AppCompatActivity {
                 String message = "You selected:  " + textView.getText().toString();
                 Toast.makeText(MainActivity. this,message, Toast.LENGTH_LONG).show();
 
-                //Intent intent = new Intent(MainActivity.this, CalcDoFActivity.class);
-                Intent intent = CalcDoFActivity.makeIntent(MainActivity.this);
-                intent.putExtra("make", lenses.get(position).getMake());
-                intent.putExtra("focal distance", lenses.get(position).getFocalLengthInMM());
-                intent.putExtra("make", lenses.get(position).getMaxAperture());
-                //intent.putExtra("Detail",lenses.get(position).getDescription());
-                startActivity(intent);
+                Intent clickIntent = CalcDoFActivity.makeIntent(MainActivity.this,
+                        lenses.get(position).getMake(),
+                        lenses.get(position).getFocalLengthInMM(),
+                        lenses.get(position).getMaxAperture(),
+                        lenses.get(position).getDescription());
+                startActivity(clickIntent);
             }
         });
     }
@@ -148,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
             populateListView();
         }
     }
+
+
+
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
